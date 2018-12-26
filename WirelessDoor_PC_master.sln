@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WirelessDoor_PC_master", "WirelessDoor_PC_master\WirelessDoor_PC_master.csproj", "{C46DE536-8332-47E2-9E59-2D379BB50510}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C46DE536-8332-47E2-9E59-2D379BB50510}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C46DE536-8332-47E2-9E59-2D379BB50510}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C46DE536-8332-47E2-9E59-2D379BB50510}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C46DE536-8332-47E2-9E59-2D379BB50510}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {53541B3A-AD7C-407F-8D63-9AA4CFE2870B}
+	EndGlobalSection
+EndGlobal
