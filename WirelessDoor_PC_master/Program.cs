@@ -25,17 +25,13 @@ namespace WirelessDoor_PC_master
                 //登录成功，进入主界面
                 if (logform.DialogResult == DialogResult.OK)
                 {
-                    //释放界面资源
-                    //logform.Dispose();
                     logform.DialogResult = DialogResult.None;
-                    Application.Run(new MainForm());
+                    //Application.Run(new MainForm());
                     return;
                 }
                 //未注册，进入注册界面
                 else if (logform.DialogResult == DialogResult.Yes)
                 {
-                    //释放界面资源
-                    //logform.Dispose();
                     logform.DialogResult = DialogResult.None;
                     Application.Run(new RegistForm());
                 }

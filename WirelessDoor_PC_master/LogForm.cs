@@ -29,7 +29,11 @@ namespace WirelessDoor_PC_master
             this.DialogResult = DialogResult.None;
         }
 
-        //登录操作
+        /// <summary>
+        /// 登录操作
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void bt_login_Click(object sender, EventArgs e)
         {
             if (txBox_username.Equals("") || txBox_passwd.Equals(""))
@@ -48,42 +52,36 @@ namespace WirelessDoor_PC_master
                     myconn.Open();
                     //新建SQL指令
                     MySqlCommand mycom = myconn.CreateCommand();
-                    //添加SQL指令
-                    mycom.CommandText = "SELECT * FROM user";
-                    //执行查询
-                    MySqlDataAdapter adap = new MySqlDataAdapter(mycom);
                     //构造SQL指令
-                    string sql = string.Format("SELECT * FROM user ");
+                    string sql = string.Format("SELECT * FROM userInfo WHERE authority=\"" + txBox_username.Text +"\";");
 
+                    //MessageBox.Show(sql);
                     mycom.CommandText = sql;
 
                     mycom.CommandType = CommandType.Text;
 
                     MySqlDataReader reader = mycom.ExecuteReader();
 
-                    int i = 0;
-                    while (reader.Read())
+                    if (reader.Read())
                     {
-                        if (reader[2].ToString() == txBox_username.Text && reader[3].ToString() == txBox_passwd.Text)
+                        //MessageBox.Show(reader[0].ToString());
+                        if (reader.GetString(3).ToString() == txBox_passwd.Text)
                         {
-                            MessageBox.Show("登录成功！");
-                            MessageBox.Show(reader[1].ToString());
                             //跳转界面
                             this.DialogResult = DialogResult.OK;
                             this.Hide();
-                            i = 0;
-                            break;
+                            MainForm mainForm = new MainForm(txBox_username.Text, reader.GetString(1));
+                            mainForm.ShowDialog();
                         }
-                        
-                        //listView1.Items.Add(sdr[0].ToString());
-                        //listView1.Items[i].SubItems.Add(sdr[1].ToString());
-                        i++;
+                        else
+                        {
+                            MessageBox.Show("用户名或密码错误！");
+                        }
                     }
-                    if (i != 0)
+                    else
                     {
                         MessageBox.Show("用户名或密码错误！");
                     }
-                    
                 }
                 catch (Exception ex)
                 {
@@ -178,7 +176,7 @@ namespace WirelessDoor_PC_master
         }
 
         /// <summary>
-        /// 限制文本框输入
+        /// 限制只能输入数字、大小字母、下划线
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

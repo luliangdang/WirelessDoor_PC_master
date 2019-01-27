@@ -13,6 +13,9 @@ using System.Data.SQLite;
 using System.Net;
 using System.Net.Sockets;
 using MySql.Data.MySqlClient;
+using qcloudsms_csharp;
+using qcloudsms_csharp.json;
+using qcloudsms_csharp.httpclient;
 
 namespace WirelessDoor_PC_master
 {
@@ -21,22 +24,47 @@ namespace WirelessDoor_PC_master
         /***********************
          * 全局变量定义
         ***********************/
+        //服务器地址
         IPAddress[] HOST = Dns.GetHostAddresses("k806034232.6655.la");
+        //服务器端口号
         private const int port = 8086;
+
+        //登录用户号
         string userID = null;
-        //NetworkStream stream = null;//网络流
+        string personName = null;
+
+        //数据库信息
+        string host = "47.100.28.6";
+        string database = "room";
+        string username = "root";
+        //string passwd = "Dll960220";
+        string passwd = "LL960220";
+
+        //短信发送appid
+        int appid = 1400178112;
+        string appkey = "6402f72c5c2d15fac7f124d78d6f4759";
+        int[] templateId = { 265637, 270334, 265636, 266224 };
+        string smsSign = "会易云";
 
         // 创建用于接收服务端消息的 线程；
         Thread threadClient = null;
         //socket连接对象
         Socket sockClient = null;
+        //服务器连接成功标志
+        bool client_flag = false;
 
-        //预约请求标志
+        //发送请求标志
         bool post_flag = false;
 
-        public MainForm()
+        /// <summary>
+        /// 窗体生成函数
+        /// </summary>
+        /// <param name="str"></param>
+        public MainForm(string str1, string str2)
         {
             InitializeComponent();
+            userID = str1;
+            personName = str2;
             beginTimePicker.MinDate = Convert.ToDateTime(DateTime.Now);
         }
 
@@ -47,20 +75,12 @@ namespace WirelessDoor_PC_master
         /// <param name="e"></param>
         private void MainForm_Load(object sender, EventArgs e)
         {
-            /*
-            if (!Directory.Exists(Environment.CurrentDirectory + @"\dataBase"))
-            {
-                Directory.CreateDirectory(Environment.CurrentDirectory + @"\dataBase");//目录不存在，建立目录
-            }
-            if (!Directory.Exists(Environment.CurrentDirectory + @"\picture"))
-            {
-                Directory.CreateDirectory(Environment.CurrentDirectory + @"\picture");//目录不存在，建立目录
-            }
-            */
-            //创建数据库
-            CreatDataBase();
+            System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
             ReLoadDataGridView();
+            textBox_reservname.Text = personName;
+            textBox_reservTel.Text = userID;
             Connect_Sever();
+            MessageBox.Show("登录成功!\r\n" + personName + ",欢迎来到会议室预约系统！");
         }
 
         /// <summary>
@@ -69,19 +89,22 @@ namespace WirelessDoor_PC_master
         private void Connect_Sever()
         {
             IPEndPoint endPoint = new IPEndPoint(HOST[0], port);
+            //创建socket连接对象
             sockClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             try
             {
+                /* 连接服务器 */
                 sockClient.Connect(endPoint);
                 threadClient = new Thread(RecvMsg);
                 threadClient.IsBackground = true;
                 threadClient.Start();
-                MessageBox.Show("服务器连接成功！！");
+                //MessageBox.Show("服务器连接成功！！");
+                client_flag = true;
             }
             catch (SocketException se)
             {
-                MessageBox.Show(se.ToString()+"登录失败！");
-                //this.Close();
+                sockClient.Close();
+                client_flag = false;
             }
         }
 
@@ -92,9 +115,12 @@ namespace WirelessDoor_PC_master
         /// <param name="e"></param>
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //关闭与服务器的连接
-            sockClient.Dispose();
-            sockClient.Close();
+            if (client_flag == true)
+            {
+                //关闭与服务器的连接
+                sockClient.Dispose();
+                sockClient.Close();
+            }
         }
 
         /// <summary>
@@ -102,117 +128,45 @@ namespace WirelessDoor_PC_master
         /// </summary>
         private void ReLoadDataGridView()
         {
-            //新建一个SQLite数据库对象
-            SQLiteConnection conn = null;
-            //数据库路径
-            string dbPath = "Data Source =" + Environment.CurrentDirectory + @"\dataBase\roomInformation.db";
-            //创建数据库实例，指定文件位置
-            conn = new SQLiteConnection(dbPath);
-            //清空表格
+            MySqlConnection myconn = new MySqlConnection("Host=" + host +
+                                                         ";Database=" + database +
+                                                         ";Username=" + username +
+                                                         ";Password=" + passwd + ";");
             dgvRoom.Rows.Clear();
             try
             {
-                //打开数据库，若不存在自动创建
-                conn.Open();
-                string sql = "SELECT COUNT(*) FROM room";
-                SQLiteCommand cmdQ = new SQLiteCommand(sql, conn);
-                //获取数据总行数
-                int RowCount = Convert.ToInt32(cmdQ.ExecuteScalar());
-                //释放reader使用的资源，防止database is lock异常产生
-                cmdQ.Dispose();
-                sql = "SELECT * FROM room";
-                cmdQ = new SQLiteCommand(sql, conn);
-                SQLiteDataReader reader = cmdQ.ExecuteReader();
+                //连接数据库
+                myconn.Open();
+                //新建SQL指令
+                MySqlCommand mycom = myconn.CreateCommand();
+                string sql = string.Format("SELECT * FROM roominfo;");
+                mycom.CommandText = sql;
+
+                mycom.CommandType = CommandType.Text;
+                //执行查询指令
+                MySqlDataReader reader = mycom.ExecuteReader();
                 while (reader.Read())
                 {
                     int index = dgvRoom.Rows.Add();
-
                     dgvRoom.Rows[index].Cells[0].Value = reader.GetString(1);
                     dgvRoom.Rows[index].Cells[1].Value = reader.GetString(2);
                     dgvRoom.Rows[index].Cells[2].Value = reader.GetString(3);
-                    dgvRoom.Rows[index].Cells[3].Value = reader.GetString(4);
                 }
-                //释放reader使用的资源，防止database is lock异常产生
+
+                //释放reader的资源
                 reader.Dispose();
+                reader.Close();
+                //关闭数据库，防止数据库被锁定
+                myconn.Dispose();
+                myconn.Close();
             }
-            catch (Exception e)
+            catch (MySqlException se)
             {
-                MessageBox.Show(e.ToString());
+                MessageBox.Show(se.ToString());
+                //关闭数据库，防止数据库被锁定
+                myconn.Dispose();
+                myconn.Close();
             }
-        }
-
-        /// <summary>
-        /// 创建数据库，初始化
-        /// </summary>
-        private void CreatDataBase()
-        {
-            SQLiteConnection conn = null;
-            string dbPath = "Data Source =" + Environment.CurrentDirectory + @".\dataBase\personalInformation.db";
-            //创建数据库实例，指定文件位置
-            conn = new SQLiteConnection(dbPath);
-            try
-            {
-                //打开数据库，若文件不存在会自动创建
-                conn.Open();
-                //sqlite指令语句
-                string sql = "CREATE TABLE IF NOT EXISTS user(" +
-                             "userID INTEGER PRIMARY KEY," +        //用户序号
-                             "userName VARCHAR(6)," +               //用户名
-                             "authority TINYINT," +                 //登录名
-                             "passwd VARCHAR(20)," +                //密码
-                             "sex VARCHAR(2)," +                    //性别
-                             "tel VARCHAR(20)," +                   //电话
-                             "qq VARCHAR(20)," +                    //qq
-                             "email VARCHAR(20)," +                 //邮箱
-                             "birthday VARCHAR(20)," +              //生日
-                             "recodeDate VARCHAR(20));";              //注册时间
-                SQLiteCommand cmdCreateTable = new SQLiteCommand(sql, conn);
-                //如果表不存在，创建人员信息表 
-                cmdCreateTable.ExecuteNonQuery();
-                //关闭数据库，防止资源占用
-                conn.Close();
-
-                dbPath = "Data Source =" + Environment.CurrentDirectory + @".\dataBase\roomInformation.db";
-                //创建数据库实例，指定文件位置  
-                conn = new SQLiteConnection(dbPath);
-                //打开数据库，若文件不存在会自动创建
-                conn.Open();
-                //sqlite指令语句
-                sql = "CREATE TABLE IF NOT EXISTS room(" +
-                      "roomID INTEGER PRIMARY KEY," +
-                      "roomName VARCHAR(6)," +
-                      "roomState TINYINT," +
-                      "beginTime VARCHAR(20)," +
-                      "endTime VARCHAR(20));";
-                cmdCreateTable = new SQLiteCommand(sql, conn);
-                //如果表不存在，创建人员信息表 
-                cmdCreateTable.ExecuteNonQuery();
-                //关闭数据库，防止资源占用
-                conn.Close();
-
-                dbPath = "Data Source =" + Environment.CurrentDirectory + @".\dataBase\reciveInformation.db";
-                //创建数据库实例，指定文件位置  
-                conn = new SQLiteConnection(dbPath);
-                //打开数据库，若文件不存在会自动创建
-                conn.Open();
-                //sqlite指令语句
-                sql = "CREATE TABLE IF NOT EXISTS recive(" +
-                      "num INTEGER PRIMARY KEY," +
-                      "codeID VARCHAR(6)," +
-                      "userName VARCHAR(6)," +
-                      "time VARCHAR(20));";
-                cmdCreateTable = new SQLiteCommand(sql, conn);
-                //如果表不存在，创建人员信息表 
-                cmdCreateTable.ExecuteNonQuery();
-                //关闭数据库，防止资源占用
-                conn.Close();
-
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.ToString());
-            }
-
         }
 
         /// <summary>
@@ -232,16 +186,75 @@ namespace WirelessDoor_PC_master
                     //接收数据，并计算数据长度
                     length = sockClient.Receive(arrMsgRec);
                     strMsg = System.Text.Encoding.UTF8.GetString(arrMsgRec, 0, length);
+                    DecoData(strMsg);
                 }
                 catch (SocketException se)
                 {
                     MessageBox.Show(se.ToString());
                     return;
                 }
-                if (strMsg == "ok" && post_flag == true)
+                /*
+                if (strMsg.IndexOf("OK",0) != -1 && post_flag == true)
                 {
                     post_flag = false;
+                    
+                    string[] param = new string[4];
+
+                    param[0] = cbRoomName.Text;
+                    param[1] = beginTimePicker.Value.ToString();
+                    param[2] = endTimePicker.Value.ToString();
+                    param[3] = "123456";
+                    MessageBox.Show(param.ToString());
+                    SmsSend(textBox_reservTel.Text, 0, param);
+                    
                     MessageBox.Show("您的预约请求已发送，请等待管理员处理！");
+                }
+                */
+            }
+        }
+
+        /// <summary>
+        /// 解析接收数据
+        /// </summary>
+        /// <param name="message"></param>
+        private void DecoData(string message)
+        {
+            MySqlConnection myconn = new MySqlConnection("Host=" + host +
+                                                         ";Database=" + database +
+                                                         ";Username=" + username +
+                                                         ";Password=" + passwd + ";");
+            string data = message;
+            int CMD = Convert.ToUInt16(data.Substring(2,1));
+            string userGet = data.Substring(3,11);
+            string msg = data.Substring(14);
+            if (userGet == userID)
+            {
+                switch (CMD)
+                {
+                    case 1:     //预约请求
+                        {
+                            if (msg.IndexOf("OK", 0) != -1 && post_flag == true)
+                            {
+                                post_flag = false;
+                                MessageBox.Show("您的预约请求已发送，请等待管理员处理！");
+                                cbRoomName.Text = "";
+                                beginTimePicker.Value = System.DateTime.Now;
+                                endTimePicker.Value = System.DateTime.Now;
+                                //textBox_reservname.Text = "";
+                                //textBox_reservTel.Text = "";
+                                rTbox_reason.Text = "";
+                            }
+                            break;
+                        }
+                    case 2:     //修改请求
+                        {
+                            break;
+                        }
+                    case 3:     //取消请求
+                        {
+                            break;
+                        }
+                    default:    break;
                 }
             }
         }
@@ -258,42 +271,185 @@ namespace WirelessDoor_PC_master
         }
 
         /// <summary>
+        /// 发送通知短信
+        /// </summary>
+        /// <param name="phoneNumber"></param>
+        /// <param name="templateNumber"></param>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        private bool SmsSend(string phoneNumber, int templateNumber, string[] param)
+        {
+            bool res = false;
+            try
+            {
+                SmsSingleSender ssender = new SmsSingleSender(appid, appkey);
+                var result = ssender.sendWithParam("86", phoneNumber,templateId[templateNumber], param, smsSign, "", "");  // 签名参数未提供或者为空时，会使用默认签名发送短信
+                res = true;
+            }
+            catch (JSONException e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+            catch (HTTPException e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+            return res;
+        }
+
+        /// <summary>
+        /// 检查预约信息
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckMessage()
+        {
+            bool res = true;
+
+            if (cbRoomName.Text == "")
+            {
+                res = false;
+                MessageBox.Show("请正确选择会议室！");
+                return res;
+            }
+            /*
+            if (textBox_reservname.Text == "")
+            {
+                res = false;
+                MessageBox.Show("预约人姓名不得为空！");
+                return res;
+            }
+            if (textBox_reservTel.Text == "")
+            {
+                res = false;
+                MessageBox.Show("预约电话不得为空！");
+                return res;
+            }
+            */
+            if (endTimePicker.Value.Subtract(beginTimePicker.Value) < System.TimeSpan.FromMinutes(30))
+            {
+                res = false;
+                MessageBox.Show("预约时间小于30分钟！");
+                return res;
+            }
+            return res;
+        }
+
+        /// <summary>
         /// 预约按钮按下触发事件
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void 预约ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string roomID = cbRoomName.Text;
-            //MessageBox.Show(roomID);
-            string userID = textBox_reservname.Text;
-            //MessageBox.Show(userID);
-            string userTel = textBox_reservTel.Text;
-            //MessageBox.Show(userTel);
-            string beginTime = beginTimePicker.Value.ToString();
-            //MessageBox.Show(beginTime);
-            string endTime = endTimePicker.Value.ToString();
-            //MessageBox.Show(endTime);
+            if (client_flag == true && CheckMessage())
+            {
+                MySqlConnection myconn = new MySqlConnection("Host=" + host +
+                                                         ";Database=" + database +
+                                                         ";Username=" + username +
+                                                         ";Password=" + passwd + ";");
+                try
+                {
+                    //连接数据库
+                    myconn.Open();
+                    //新建SQL指令
+                    MySqlCommand mycom = myconn.CreateCommand();
+                    string sql = string.Format("SELECT roomID FROM roominfo WHERE roomName=\""+cbRoomName.Text.ToString()+"\";");
+                    //MessageBox.Show(sql);
+                    mycom.CommandText = sql;
 
-            //需要发送的信息
-            string strMsg ='@'+ "PC" + '@' + roomID + '@' + userID + '@' + beginTime + '@' + endTime + "\r\n";
-            byte[] arrSendMsg = System.Text.Encoding.UTF8.GetBytes(strMsg);
-            MessageBox.Show(strMsg);
-            sockClient.Send(arrSendMsg);
-            post_flag = true;
+                    mycom.CommandType = CommandType.Text;
+                    //执行查询指令
+                    MySqlDataReader reader = mycom.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        string roomID = reader.GetUInt16(0).ToString().PadLeft(4, '0');
+                        //MessageBox.Show(roomID);
+                        string userName = textBox_reservname.Text;
+                        //MessageBox.Show(userID);
+                        string userTel = textBox_reservTel.Text;
+                        //MessageBox.Show(userTel);
+                        string beginTime = beginTimePicker.Value.ToString("yyyy-MM-dd HH:mm");
+                        //MessageBox.Show(beginTime);
+                        string endTime = endTimePicker.Value.ToString("yyyy-MM-dd HH:mm");
+                        //MessageBox.Show(endTime);
+                        string reason = rTbox_reason.Text;
 
-        }
+                        //释放reader的资源
+                        reader.Dispose();
+                        reader.Close();
+                        //关闭数据库，防止数据库被锁定
+                        myconn.Dispose();
+                        myconn.Close();
 
-        /// <summary>
-        /// 数据表格双击单元格触发事件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void dgvRoom_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            string room_num = dgvRoom.CurrentCell.Value.ToString();
-            //cbRoomName.Text = 
-            MessageBox.Show(dgvRoom.CurrentCell.Value.ToString());
+                        //需要发送的信息
+                        string strMsg = '@' + "P1" + roomID + userTel + userName + beginTime + endTime + reason + "\r\n";
+                        byte[] arrSendMsg = System.Text.Encoding.UTF8.GetBytes(strMsg);
+                        //MessageBox.Show(strMsg);
+                        sockClient.Send(arrSendMsg);
+                        post_flag = true;
+                        //等待超时时间
+                        int timeout = 0;
+                        //等待预约应答                  
+                        while (post_flag == true)
+                        {
+                            timeout++;
+                            Thread.Sleep(1000);
+                            if (timeout > 5)
+                            {
+                                post_flag = false;
+                                MessageBox.Show("数据接收超时，服务器停机！");
+                                break;
+                            }
+                        }
+                        if (timeout < 6)
+                        {
+                            myconn.Open();
+
+                            sql = "INSERT INTO reservationinfo values(@roomID,@roomName,@roomState,@msgState,@passwd,@authority,@userName,@beginTime,@endTime,@reason)";
+
+                            mycom.CommandText = sql;
+                            mycom.Parameters.AddRange(new[] {
+                                                  new MySqlParameter("@roomID",roomID),
+                                                  new MySqlParameter("roomName",cbRoomName.Text),
+                                                  new MySqlParameter("@roomState",null),
+                                                  new MySqlParameter("@msgState","未处理"),
+                                                  new MySqlParameter("@passwd",null),
+                                                  new MySqlParameter("@authority",userTel),
+                                                  new MySqlParameter("@userName",userName),
+                                                  new MySqlParameter("@beginTime",beginTime),
+                                                  new MySqlParameter("@endTime",endTime),
+                                                  new MySqlParameter("@reason",reason)
+                                                  });
+
+                            MySqlTransaction transacter = myconn.BeginTransaction();
+                            mycom.Transaction = transacter;
+
+                            mycom.ExecuteNonQuery();//执行查询
+                            transacter.Commit();//提交
+                            mycom.Dispose();//释放reader使用的资源，防止database is lock异常产生
+                            transacter.Dispose();//释放reader使用的资源，防止database is lock异常产生
+                        }
+                        //关闭数据库，防止数据库被锁定
+                        myconn.Dispose();
+                        myconn.Close();
+                    }
+                }
+                catch (MySqlException se)
+                {
+                    MessageBox.Show(se.ToString());
+                    //关闭数据库，防止数据库被锁定
+                    myconn.Dispose();
+                    myconn.Close();
+                }
+            }
+            else if(client_flag == false)
+            {
+                MessageBox.Show("尚未连接服务器，预约失败！\r\n请重新登录！");
+            }
         }
 
         /// <summary>
@@ -306,5 +462,70 @@ namespace WirelessDoor_PC_master
             预约ToolStripMenuItem_Click(sender, e);
         }
 
+        /// <summary>
+        /// 查询预约记录
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void 查询预约记录ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ReservationForm reservationForm = new ReservationForm(personName);
+            reservationForm.ShowDialog();
+        }
+
+        /// <summary>
+        /// 修改个人信息
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void 个人信息ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MySqlConnection myconn = new MySqlConnection("Host=" + host +
+                                                         ";Database=" + database +
+                                                         ";Username=" + username +
+                                                         ";Password=" + passwd + ";");
+            try
+            {
+                //连接数据库
+                myconn.Open();
+                //新建SQL指令
+                MySqlCommand mycom = myconn.CreateCommand();
+                string sql = string.Format("SELECT userName FROM userinfo WHERE tel=\"" + userID + "\";");
+                //MessageBox.Show(sql);
+                mycom.CommandText = sql;
+                mycom.CommandType = CommandType.Text;
+                //执行查询指令
+                MySqlDataReader reader = mycom.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    personName = reader.GetString(0);
+                }
+
+                //关闭数据库，防止数据库被锁定
+                myconn.Dispose();
+                myconn.Close();
+                PersonForm personForm = new PersonForm(personName, userID);
+                personForm.ShowDialog();
+            }
+            catch (MySqlException se)
+            {
+                MessageBox.Show(se.ToString());
+                //关闭数据库，防止数据库被锁定
+                myconn.Dispose();
+                myconn.Close();
+            }
+        }
+
+        /// <summary>
+        /// 修改预约信息
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void 预约信息ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ReservationForm reservationForm = new ReservationForm(personName);
+            reservationForm.ShowDialog();
+        }
     }
 }

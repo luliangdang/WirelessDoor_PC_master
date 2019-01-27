@@ -33,7 +33,6 @@ F:\文档\研究生项目\无线门禁系统\WirelessDoor_PC_master\WirelessDoor
 F:\文档\研究生项目\无线门禁系统\WirelessDoor_PC_master\WirelessDoor_PC_master\bin\Debug\MySql.Data.EntityFramework.dll
 F:\文档\研究生项目\无线门禁系统\WirelessDoor_PC_master\WirelessDoor_PC_master\bin\Debug\MySQL.Data.EntityFrameworkCore.Design.dll
 F:\文档\研究生项目\无线门禁系统\WirelessDoor_PC_master\WirelessDoor_PC_master\bin\Debug\MySQL.Data.EntityFrameworkCore.dll
-F:\文档\研究生项目\无线门禁系统\WirelessDoor_PC_master\WirelessDoor_PC_master\bin\Debug\Newtonsoft.Json.dll
 F:\文档\研究生项目\无线门禁系统\WirelessDoor_PC_master\WirelessDoor_PC_master\bin\Debug\MySql.Data.xml
 F:\文档\研究生项目\无线门禁系统\WirelessDoor_PC_master\WirelessDoor_PC_master\bin\Debug\MySql.Data.EntityFramework.xml
 F:\文档\研究生项目\无线门禁系统\WirelessDoor_PC_master\WirelessDoor_PC_master\bin\Debug\MySQL.Data.EntityFrameworkCore.xml
@@ -62,3 +61,8 @@ F:\文档\研究生项目\无线门禁系统\WirelessDoor_PC_master\WirelessDoor
 F:\文档\研究生项目\无线门禁系统\WirelessDoor_PC_master\WirelessDoor_PC_master\bin\Debug\AForge.Video.DirectShow.xml
 F:\文档\研究生项目\无线门禁系统\WirelessDoor_PC_master\WirelessDoor_PC_master\bin\Debug\AForge.Video.xml
 F:\文档\研究生项目\无线门禁系统\WirelessDoor_PC_master\WirelessDoor_PC_master\bin\Debug\AForge.Math.xml
+F:\文档\研究生项目\无线门禁系统\WirelessDoor_PC_master\WirelessDoor_PC_master\bin\Debug\Newtonsoft.Json.dll
+F:\文档\研究生项目\无线门禁系统\WirelessDoor_PC_master\WirelessDoor_PC_master\bin\Debug\qcloudsms_csharp.dll
+F:\文档\研究生项目\无线门禁系统\WirelessDoor_PC_master\WirelessDoor_PC_master\bin\Debug\Newtonsoft.Json.xml
+F:\文档\研究生项目\无线门禁系统\WirelessDoor_PC_master\WirelessDoor_PC_master\obj\Debug\WirelessDoor_PC_master.PersonForm.resources
+F:\文档\研究生项目\无线门禁系统\WirelessDoor_PC_master\WirelessDoor_PC_master\obj\Debug\WirelessDoor_PC_master.ReservationForm.resources

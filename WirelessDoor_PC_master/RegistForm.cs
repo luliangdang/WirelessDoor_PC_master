@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 using System.Net;
 using System.Net.Sockets;
 using MySql.Data.MySqlClient;
@@ -13,6 +14,7 @@ using Baidu.Aip.Face;
 using AForge.Video.DirectShow;
 using AForge.Video;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace WirelessDoor_PC_master
 {
@@ -27,11 +29,13 @@ namespace WirelessDoor_PC_master
 
         IPAddress[] HOST = Dns.GetHostAddresses("k806034232.6655.la");
         private const int port = 8086;
+        //数据库信息
+        string host = "47.100.28.6";
         string database = "room";
-        String username = "root";
-        string passwd = "Dll960220";
+        string username = "root";
+        //string passwd = "Dll960220";
+        string passwd = "LL960220";
 
-        
 
         public RegistForm()
         {
@@ -52,6 +56,8 @@ namespace WirelessDoor_PC_master
                 if (videoDevices.Count == 0)
                 {
                     MessageBox.Show("未找到摄像头！");
+                    btCamera.Enabled = false;
+                    btShoot.Enabled = false;
                 }
                 else
                 {
@@ -91,10 +97,10 @@ namespace WirelessDoor_PC_master
         /// <returns></returns>
         private bool CheckInput()
         {
-            MySqlConnection myconn = new MySqlConnection("Host =localhost"
-                                                        + ";Database=" + database
-                                                        + ";Username=" + username
-                                                        + ";Password=" + passwd + ";");
+            MySqlConnection myconn = new MySqlConnection("Host=" + host +
+                                                         ";Database=" + database +
+                                                         ";Username=" + username +
+                                                         ";Password=" + passwd + ";");
             bool res = false;
             //用户名不可为空
             if (tbUserName.Text == "")
@@ -168,7 +174,7 @@ namespace WirelessDoor_PC_master
                 //执行查询
                 //MySqlDataAdapter adap = new MySqlDataAdapter(mycom);
                 //构造SQL指令
-                string sql = string.Format("SELECT * FROM user ");
+                string sql = string.Format("SELECT * FROM userInfo ");
                 mycom.CommandText = sql;
 
                 mycom.CommandType = CommandType.Text;
@@ -251,10 +257,10 @@ namespace WirelessDoor_PC_master
             client.Timeout = 60000;  // 修改超时时间
             //输入值检测返回值
             bool res = true;
-            MySqlConnection myconn = new MySqlConnection("Host =localhost"
-                                                        + ";Database=" + database
-                                                        + ";Username=" + username
-                                                        + ";Password=" + passwd + ";");
+            MySqlConnection myconn = new MySqlConnection("Host=" + host +
+                                                         ";Database=" + database +
+                                                         ";Username=" + username +
+                                                         ";Password=" + passwd + ";");
             label9.Text = "带*为必填项";
             label9.ForeColor = Color.Black;
             label10.ForeColor = Color.Black;
@@ -329,14 +335,14 @@ namespace WirelessDoor_PC_master
                 MySqlTransaction transaction = myconn.BeginTransaction();//事务必须在try外面赋值不然catch里的
                 try
                 {
-                    string sql = "SELECT count(*) FROM user";
+                    string sql = "SELECT count(*) FROM userInfo";
 
                     //开启连接
                     MySqlCommand cmd = new MySqlCommand(sql, myconn);
 
                     Object get_count = cmd.ExecuteScalar();
                     int count = int.Parse(get_count.ToString())+1;
-                    cmd.CommandText = "insert into user values(@userID,@userName,@authority,@passwd,@sex,@tel,@qq,@email,@birthday,@recodeDate);";
+                    cmd.CommandText = "insert into userInfo values(@userID,@userName,@authority,@passwd,@sex,@tel,@qq,@email,@birthday,@recodeDate);";
                     cmd.Parameters.AddRange(new[] {
                                             new MySqlParameter("@userID",count),                    //用户序号
                                             new MySqlParameter("@userName",tbUserName.Text),        //用户名
@@ -372,7 +378,6 @@ namespace WirelessDoor_PC_master
                     //关闭连接，以免数据库被锁
                     myconn.Dispose();
                     myconn.Close();
-
                 }
             }
         }
@@ -563,5 +568,59 @@ namespace WirelessDoor_PC_master
                 btShoot.Enabled = false;
             }
         }
+
+        /// <summary>
+        /// 限制TextBox只能输入中文和数字
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TextChangedChinese(object sender, EventArgs e)
+        {
+            TextBox tbInput = (TextBox)sender;
+            var reg = new Regex("^[\u2E80-\u9FFF]*$");
+            var str = tbInput.Text.Trim();
+            var sb = new StringBuilder();
+            if (!reg.IsMatch(str))
+            {
+                for (int i = 0; i < str.Length; i++)
+                {
+                    if (reg.IsMatch(str[i].ToString()))
+                    {
+                        sb.Append(str[i].ToString());
+                    }
+                }
+                tbInput.Text = sb.ToString();
+                //定义输入焦点在最后一个字符
+                tbInput.SelectionStart = tbInput.Text.Length;
+            }
+        }
+
+        /// <summary>
+        /// 限制只能输入数字、大小字母、下划线
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TextChangedNumber(object sender, EventArgs e)
+        {
+            TextBox tbInput = (TextBox)sender;
+            var reg = new Regex("^[0-9A-Za-z_]*$");
+            var str = tbInput.Text.Trim();
+            var sb = new StringBuilder();
+            if (!reg.IsMatch(str))
+            {
+                for (int i = 0; i < str.Length; i++)
+                {
+                    if (reg.IsMatch(str[i].ToString()))
+                    {
+                        sb.Append(str[i].ToString());
+                    }
+                }
+                tbInput.Text = sb.ToString();
+                //定义输入焦点在最后一个字符
+                tbInput.SelectionStart = tbInput.Text.Length;
+            }
+        }
+
+
     }
 }

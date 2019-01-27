@@ -46,7 +46,7 @@
             this.lable1.Name = "lable1";
             this.lable1.Size = new System.Drawing.Size(41, 12);
             this.lable1.TabIndex = 0;
-            this.lable1.Text = "用户名";
+            this.lable1.Text = "登录名";
             // 
             // label2
             // 
@@ -75,6 +75,16 @@
             this.txBox_passwd.TabIndex = 3;
             this.txBox_passwd.UseSystemPasswordChar = true;
             // 
+            // bt_login
+            // 
+            this.bt_login.Location = new System.Drawing.Point(152, 193);
+            this.bt_login.Name = "bt_login";
+            this.bt_login.Size = new System.Drawing.Size(75, 23);
+            this.bt_login.TabIndex = 6;
+            this.bt_login.Text = "登录";
+            this.bt_login.UseVisualStyleBackColor = true;
+            this.bt_login.Click += new System.EventHandler(this.bt_login_Click);
+            // 
             // ckBox_rp
             // 
             this.ckBox_rp.AutoSize = true;
@@ -96,16 +106,6 @@
             this.cckBox_autoLog.TabIndex = 5;
             this.cckBox_autoLog.Text = "自动登录";
             this.cckBox_autoLog.UseVisualStyleBackColor = false;
-            // 
-            // bt_login
-            // 
-            this.bt_login.Location = new System.Drawing.Point(152, 193);
-            this.bt_login.Name = "bt_login";
-            this.bt_login.Size = new System.Drawing.Size(75, 23);
-            this.bt_login.TabIndex = 6;
-            this.bt_login.Text = "登录";
-            this.bt_login.UseVisualStyleBackColor = true;
-            this.bt_login.Click += new System.EventHandler(this.bt_login_Click);
             // 
             // bt_regist
             // 

@@ -273,6 +273,7 @@
             this.tbQQ.Name = "tbQQ";
             this.tbQQ.Size = new System.Drawing.Size(116, 21);
             this.tbQQ.TabIndex = 10;
+            this.tbQQ.TextChanged += new System.EventHandler(this.TextChangedNumber);
             // 
             // tbTel
             // 
@@ -280,6 +281,7 @@
             this.tbTel.Name = "tbTel";
             this.tbTel.Size = new System.Drawing.Size(116, 21);
             this.tbTel.TabIndex = 9;
+            this.tbTel.TextChanged += new System.EventHandler(this.TextChangedNumber);
             // 
             // rbWoman
             // 
@@ -309,6 +311,8 @@
             this.tbCheck.Name = "tbCheck";
             this.tbCheck.Size = new System.Drawing.Size(116, 21);
             this.tbCheck.TabIndex = 6;
+            this.tbCheck.UseSystemPasswordChar = true;
+            this.tbCheck.TextChanged += new System.EventHandler(this.TextChangedNumber);
             // 
             // tbPasswd
             // 
@@ -316,6 +320,8 @@
             this.tbPasswd.Name = "tbPasswd";
             this.tbPasswd.Size = new System.Drawing.Size(116, 21);
             this.tbPasswd.TabIndex = 5;
+            this.tbPasswd.UseSystemPasswordChar = true;
+            this.tbPasswd.TextChanged += new System.EventHandler(this.TextChangedNumber);
             // 
             // tbUserName
             // 
@@ -323,6 +329,7 @@
             this.tbUserName.Name = "tbUserName";
             this.tbUserName.Size = new System.Drawing.Size(116, 21);
             this.tbUserName.TabIndex = 1;
+            this.tbUserName.TextChanged += new System.EventHandler(this.TextChangedChinese);
             // 
             // label1
             // 
@@ -416,6 +423,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(419, 346);
             this.Controls.Add(this.panel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "RegistForm";
