@@ -28,13 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LogForm));
             this.lable1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.txBox_username = new System.Windows.Forms.TextBox();
             this.txBox_passwd = new System.Windows.Forms.TextBox();
             this.bt_login = new System.Windows.Forms.Button();
-            this.ckBox_rp = new System.Windows.Forms.CheckBox();
-            this.cckBox_autoLog = new System.Windows.Forms.CheckBox();
             this.bt_regist = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -42,11 +41,11 @@
             // 
             this.lable1.AutoSize = true;
             this.lable1.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.lable1.Location = new System.Drawing.Point(105, 101);
+            this.lable1.Location = new System.Drawing.Point(93, 101);
             this.lable1.Name = "lable1";
-            this.lable1.Size = new System.Drawing.Size(41, 12);
+            this.lable1.Size = new System.Drawing.Size(53, 12);
             this.lable1.TabIndex = 0;
-            this.lable1.Text = "登录名";
+            this.lable1.Text = "登录账号";
             // 
             // label2
             // 
@@ -77,7 +76,7 @@
             // 
             // bt_login
             // 
-            this.bt_login.Location = new System.Drawing.Point(152, 193);
+            this.bt_login.Location = new System.Drawing.Point(152, 178);
             this.bt_login.Name = "bt_login";
             this.bt_login.Size = new System.Drawing.Size(75, 23);
             this.bt_login.TabIndex = 6;
@@ -85,31 +84,9 @@
             this.bt_login.UseVisualStyleBackColor = true;
             this.bt_login.Click += new System.EventHandler(this.bt_login_Click);
             // 
-            // ckBox_rp
-            // 
-            this.ckBox_rp.AutoSize = true;
-            this.ckBox_rp.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.ckBox_rp.Location = new System.Drawing.Point(152, 171);
-            this.ckBox_rp.Name = "ckBox_rp";
-            this.ckBox_rp.Size = new System.Drawing.Size(72, 16);
-            this.ckBox_rp.TabIndex = 4;
-            this.ckBox_rp.Text = "记住密码";
-            this.ckBox_rp.UseVisualStyleBackColor = false;
-            // 
-            // cckBox_autoLog
-            // 
-            this.cckBox_autoLog.AutoSize = true;
-            this.cckBox_autoLog.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.cckBox_autoLog.Location = new System.Drawing.Point(237, 171);
-            this.cckBox_autoLog.Name = "cckBox_autoLog";
-            this.cckBox_autoLog.Size = new System.Drawing.Size(72, 16);
-            this.cckBox_autoLog.TabIndex = 5;
-            this.cckBox_autoLog.Text = "自动登录";
-            this.cckBox_autoLog.UseVisualStyleBackColor = false;
-            // 
             // bt_regist
             // 
-            this.bt_regist.Location = new System.Drawing.Point(251, 193);
+            this.bt_regist.Location = new System.Drawing.Point(251, 178);
             this.bt_regist.Name = "bt_regist";
             this.bt_regist.Size = new System.Drawing.Size(75, 23);
             this.bt_regist.TabIndex = 7;
@@ -125,14 +102,13 @@
             this.BackgroundImage = global::WirelessDoor_PC_master.Properties.Resources.login;
             this.ClientSize = new System.Drawing.Size(463, 299);
             this.Controls.Add(this.bt_regist);
-            this.Controls.Add(this.cckBox_autoLog);
-            this.Controls.Add(this.ckBox_rp);
             this.Controls.Add(this.bt_login);
             this.Controls.Add(this.txBox_passwd);
             this.Controls.Add(this.txBox_username);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lable1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "LogForm";
@@ -149,8 +125,6 @@
         private System.Windows.Forms.TextBox txBox_username;
         private System.Windows.Forms.TextBox txBox_passwd;
         private System.Windows.Forms.Button bt_login;
-        private System.Windows.Forms.CheckBox ckBox_rp;
-        private System.Windows.Forms.CheckBox cckBox_autoLog;
         private System.Windows.Forms.Button bt_regist;
     }
 }

@@ -248,102 +248,140 @@ namespace WirelessDoor_PC_master
         /// <param name="e"></param>
         private void btRegist_Click(object sender, EventArgs e)
         {
-            // 设置APPID/AK/SK
-            var APP_ID = "14976181";
-            var API_KEY = "v6gNCmUGTHzdkUVP0XI7ksaG";
-            var SECRET_KEY = "YPqgbFV9T0qmEGbnvMKYGPHeGw5exW5F";
-
-            var client = new Baidu.Aip.Face.Face(API_KEY, SECRET_KEY);
-            client.Timeout = 60000;  // 修改超时时间
-            //输入值检测返回值
-            bool res = true;
+            bool issearch = false;
             MySqlConnection myconn = new MySqlConnection("Host=" + host +
-                                                         ";Database=" + database +
-                                                         ";Username=" + username +
-                                                         ";Password=" + passwd + ";");
-            label9.Text = "带*为必填项";
-            label9.ForeColor = Color.Black;
-            label10.ForeColor = Color.Black;
-            label11.ForeColor = Color.Black;
-            label12.ForeColor = Color.Black;
-            label13.ForeColor = Color.Black;
-            label14.ForeColor = Color.Black;
-            res = CheckInput();
-            if (res == false)
+                                                            ";Database=" + database +
+                                                            ";Username=" + username +
+                                                            ";Password=" + passwd + ";");
+            try
             {
-                FileStream fs = File.OpenRead(tbPhotoPath.Text); //OpenRead
-                int filelength = 0;
-                filelength = (int)fs.Length; //获得文件长度 
-                Byte[] imgData64 = new Byte[filelength]; //建立一个字节数组 
-                fs.Read(imgData64, 0, filelength); //按字节流读取 
-                                               //System.Drawing.Image result = System.Drawing.Image.FromStream(fs);
-                fs.Close();
-                //图片转BASE64码
-                var image = Convert.ToBase64String(imgData64);
-                //文件格式
-                var imageType = "BASE64";
-                //注册人脸用户组
-                var groupId = "User";
-                //注册人脸用户号
-                var userId = tbTel.Text;
-                //人脸注册返回结果
-                bool userAddCheck = false;
+                //连接数据库
+                myconn.Open();
+                //新建SQL指令
+                MySqlCommand mycom = myconn.CreateCommand();
+                string sql = string.Format("SELECT authoity FROM userinfo WHERE tel=\"" + tbTel.Text.ToString() + "\";");
+                //MessageBox.Show(sql);
+                mycom.CommandText = sql;
 
-                try
+                mycom.CommandType = CommandType.Text;
+                //执行查询指令
+                MySqlDataReader reader = mycom.ExecuteReader();
+                if (reader.Read())
                 {
-                    // 如果有可选参数
-                    var options = new Dictionary<string, object>{
+                    issearch = true;
+                }
+                //释放reader的资源
+                reader.Dispose();
+                reader.Close();
+                //关闭数据库，防止数据库被锁定
+                //myconn.Dispose();
+                myconn.Close();
+            }
+            catch(MySqlException se)
+            {
+                MessageBox.Show(se.ToString());
+                //关闭数据库，防止数据库被锁定
+                myconn.Dispose();
+                myconn.Close();
+            }
+
+            if (issearch == false)
+            {
+                // 设置APPID/AK/SK
+                var APP_ID = "14976181";
+                var API_KEY = "v6gNCmUGTHzdkUVP0XI7ksaG";
+                var SECRET_KEY = "YPqgbFV9T0qmEGbnvMKYGPHeGw5exW5F";
+
+                var client = new Baidu.Aip.Face.Face(API_KEY, SECRET_KEY);
+                client.Timeout = 60000;  // 修改超时时间
+                                         //输入值检测返回值
+                bool res = true;
+                label9.Text = "带*为必填项";
+                label9.ForeColor = Color.Black;
+                label10.ForeColor = Color.Black;
+                label11.ForeColor = Color.Black;
+                label12.ForeColor = Color.Black;
+                label13.ForeColor = Color.Black;
+                label14.ForeColor = Color.Black;
+                res = CheckInput();
+                if (res == false)
+                {
+                    FileStream fs = File.OpenRead(tbPhotoPath.Text); //OpenRead
+                    int filelength = 0;
+                    filelength = (int)fs.Length; //获得文件长度 
+                    Byte[] imgData64 = new Byte[filelength]; //建立一个字节数组 
+                    fs.Read(imgData64, 0, filelength); //按字节流读取 
+                                                       //System.Drawing.Image result = System.Drawing.Image.FromStream(fs);
+                    fs.Close();
+                    //图片转BASE64码
+                    var image = Convert.ToBase64String(imgData64);
+                    //文件格式
+                    var imageType = "BASE64";
+                    //注册人脸用户组
+                    var groupId = "User";
+                    //注册人脸用户号
+                    var userId = tbTel.Text;
+                    //人脸注册返回结果
+                    bool userAddCheck = false;
+
+                    try
+                    {
+                        // 如果有可选参数
+                        var options = new Dictionary<string, object>{
                                                                 {"quality_control", "NORMAL"},
                                                                 {"liveness_control", "LOW"}
                                                                 };
-                    // 调用人脸注册，可能会抛出网络等异常，请使用try/catch捕获
-                    var get_result = client.UserAdd(image, imageType, groupId, userId, options);
-                    string index_resilt = get_result.ToString();
-                    MessageBox.Show(index_resilt);
-                    //判断注册情况
-                    int index_add = index_resilt.IndexOf("SUCCESS");
-                    int index_exist = index_resilt.IndexOf("exist");
-                    //注册成功，添加人脸图片
-                    if (index_add != -1 || index_exist != -1)
-                    {
-                        //添加人脸图片
-                        get_result = client.UserUpdate(image, imageType, groupId, userId, options);
-                        MessageBox.Show(get_result.ToString());
-                        index_resilt = get_result.ToString();
-                        int index_update = index_resilt.IndexOf("SUCCESS");
-                        if(index_update != -1)
+                        // 调用人脸注册，可能会抛出网络等异常，请使用try/catch捕获
+                        var get_result = client.UserAdd(image, imageType, groupId, userId, options);
+                        string index_resilt = get_result.ToString();
+                        MessageBox.Show(index_resilt);
+                        //判断注册情况
+                        int index_add = index_resilt.IndexOf("SUCCESS");
+                        int index_exist = index_resilt.IndexOf("exist");
+                        //注册成功，添加人脸图片
+                        if (index_add != -1 || index_exist != -1)
                         {
-                            userAddCheck = true;    //人脸图片添加成功
+                            //添加人脸图片
+                            get_result = client.UserUpdate(image, imageType, groupId, userId, options);
+                            MessageBox.Show(get_result.ToString());
+                            index_resilt = get_result.ToString();
+                            int index_update = index_resilt.IndexOf("SUCCESS");
+                            if (index_update != -1)
+                            {
+                                userAddCheck = true;    //人脸图片添加成功
+                            }
                         }
                     }
-                }
-                catch (FieldAccessException face_ex)
-                {
-                    MessageBox.Show(face_ex.ToString());
-                }
+                    catch (FieldAccessException face_ex)
+                    {
+                        MessageBox.Show(face_ex.ToString());
+                    }
 
-                string sex = null;
-                if (rbMan.Checked == Enabled)
-                {
-                    sex = rbMan.Text;
-                }
-                else if (rbWoman.Checked == Enabled)
-                {
-                    sex = rbWoman.Text;
-                }
-                myconn.Open();
-                MySqlTransaction transaction = myconn.BeginTransaction();//事务必须在try外面赋值不然catch里的
-                try
-                {
-                    string sql = "SELECT count(*) FROM userInfo";
+                    string sex = null;
+                    if (rbMan.Checked == Enabled)
+                    {
+                        sex = rbMan.Text;
+                    }
+                    else if (rbWoman.Checked == Enabled)
+                    {
+                        sex = rbWoman.Text;
+                    }
 
-                    //开启连接
-                    MySqlCommand cmd = new MySqlCommand(sql, myconn);
+                    if (userAddCheck == true)
+                    {
+                        myconn.Open();
+                        MySqlTransaction transaction = myconn.BeginTransaction();//事务必须在try外面赋值不然catch里的
+                        try
+                        {
+                            string sql = "SELECT count(*) FROM userInfo";
 
-                    Object get_count = cmd.ExecuteScalar();
-                    int count = int.Parse(get_count.ToString())+1;
-                    cmd.CommandText = "insert into userInfo values(@userID,@userName,@authority,@passwd,@sex,@tel,@qq,@email,@birthday,@recodeDate);";
-                    cmd.Parameters.AddRange(new[] {
+                            //开启连接
+                            MySqlCommand cmd = new MySqlCommand(sql, myconn);
+
+                            Object get_count = cmd.ExecuteScalar();
+                            int count = int.Parse(get_count.ToString()) + 1;
+                            cmd.CommandText = "insert into userInfo values(@userID,@userName,@authority,@passwd,@sex,@tel,@qq,@email,@birthday,@recodeDate);";
+                            cmd.Parameters.AddRange(new[] {
                                             new MySqlParameter("@userID",count),                    //用户序号
                                             new MySqlParameter("@userName",tbUserName.Text),        //用户名
                                             new MySqlParameter("@authority",tbTel.Text),            //用户识别号
@@ -354,32 +392,35 @@ namespace WirelessDoor_PC_master
                                             new MySqlParameter("@email",tbMail.Text),               //邮箱
                                             new MySqlParameter("@birthday",dtBirthday.Value.ToString("yyyy年MM月dd日")),
                                             new MySqlParameter("recodeDate",DateTime.Now.ToString("yyyy年MM月dd日 HH时mm分"))
-                    });
-                    //MessageBox.Show(cmd.CommandText.ToString());
-                    cmd.ExecuteNonQuery();
-                    //事务要么回滚要么提交，即Rollback()与Commit()只能执行一个
-                    transaction.Commit();
+                                            });
+                            //MessageBox.Show(cmd.CommandText.ToString());
+                            cmd.ExecuteNonQuery();
+                            //事务要么回滚要么提交，即Rollback()与Commit()只能执行一个
+                            transaction.Commit();
 
-                    label9.Text = "信息正确，注册成功！";
-                    label9.ForeColor = Color.Black;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                    transaction.Rollback();//事务ExecuteNonQuery()执行失败报错，username被设置unique
-                    //关闭连接，以免数据库被锁
-                    myconn.Dispose();
-                    myconn.Close();
-                    label9.Text = "注册失败！";
-                    label9.ForeColor = Color.Red;
-                }
-                finally
-                {
-                    //关闭连接，以免数据库被锁
-                    myconn.Dispose();
-                    myconn.Close();
+                            label9.Text = "信息正确，注册成功！";
+                            label9.ForeColor = Color.Black;
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.ToString());
+                            transaction.Rollback();//事务ExecuteNonQuery()执行失败报错，username被设置unique
+                                                   //关闭连接，以免数据库被锁
+                            myconn.Dispose();
+                            myconn.Close();
+                            label9.Text = "注册失败！";
+                            label9.ForeColor = Color.Red;
+                        }
+                        finally
+                        {
+                            //关闭连接，以免数据库被锁
+                            myconn.Dispose();
+                            myconn.Close();
+                        }
+                    }
                 }
             }
+            else MessageBox.Show("此手机号已注册");
         }
 
         /// <summary>
@@ -400,6 +441,7 @@ namespace WirelessDoor_PC_master
             btCamera.Enabled = false;
             btShoot.Enabled = true;
         }
+
         /// <summary>
         /// 使用图片文件
         /// </summary>
@@ -410,7 +452,7 @@ namespace WirelessDoor_PC_master
             //设置对话框的标题
             openFileDialog1.Title = "选择一张图片";
             //固定打开对话框选择路径
-            openFileDialog1.InitialDirectory = @"C:\Users\Administrator\Pictures";
+            openFileDialog1.InitialDirectory = @"C:\Users\Administrator";
             //设置打开文件类型
             openFileDialog1.Filter = "JPGE格式(*.jpge)|*.jpg|bmp格式(*.bmp)|*.bmp|All files (*.*)|*.* ";
             //默认选择类型

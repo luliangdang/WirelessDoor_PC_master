@@ -37,7 +37,6 @@ F:\文档\研究生项目\无线门禁系统\WirelessDoor_PC_master\WirelessDoor
 F:\文档\研究生项目\无线门禁系统\WirelessDoor_PC_master\WirelessDoor_PC_master\bin\Debug\MySql.Data.EntityFramework.xml
 F:\文档\研究生项目\无线门禁系统\WirelessDoor_PC_master\WirelessDoor_PC_master\bin\Debug\MySQL.Data.EntityFrameworkCore.xml
 F:\文档\研究生项目\无线门禁系统\WirelessDoor_PC_master\WirelessDoor_PC_master\bin\Debug\MySQL.Data.EntityFrameworkCore.Design.xml
-F:\文档\研究生项目\无线门禁系统\WirelessDoor_PC_master\WirelessDoor_PC_master\obj\Debug\WirelessDoor_PC_master.csprojResolveAssemblyReference.cache
 F:\文档\研究生项目\无线门禁系统\WirelessDoor_PC_master\WirelessDoor_PC_master\obj\Debug\WirelessDoor_PC_master.exe.config
 F:\文档\研究生项目\无线门禁系统\WirelessDoor_PC_master\WirelessDoor_PC_master\obj\Debug\WirelessDoor_PC_master.LogForm.resources
 F:\文档\研究生项目\无线门禁系统\WirelessDoor_PC_master\WirelessDoor_PC_master\obj\Debug\WirelessDoor_PC_master.MainForm.resources

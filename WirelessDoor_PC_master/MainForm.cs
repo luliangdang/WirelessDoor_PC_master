@@ -9,7 +9,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-using System.Data.SQLite;
 using System.Net;
 using System.Net.Sockets;
 using MySql.Data.MySqlClient;
@@ -26,6 +25,7 @@ namespace WirelessDoor_PC_master
         ***********************/
         //服务器地址
         IPAddress[] HOST = Dns.GetHostAddresses("k806034232.6655.la");
+        //IPAddress HOST = IPAddress.Parse("172.20.10.3");
         //服务器端口号
         private const int port = 8086;
 
@@ -34,6 +34,7 @@ namespace WirelessDoor_PC_master
         string personName = null;
 
         //数据库信息
+        //string host = "localhost";
         string host = "47.100.28.6";
         string database = "room";
         string username = "root";
@@ -66,6 +67,7 @@ namespace WirelessDoor_PC_master
             userID = str1;
             personName = str2;
             beginTimePicker.MinDate = Convert.ToDateTime(DateTime.Now);
+            endTimePicker.MinDate = Convert.ToDateTime(DateTime.Now);
         }
 
         /// <summary>
@@ -89,6 +91,7 @@ namespace WirelessDoor_PC_master
         private void Connect_Sever()
         {
             IPEndPoint endPoint = new IPEndPoint(HOST[0], port);
+            //IPEndPoint endPoint = new IPEndPoint(HOST, port);
             //创建socket连接对象
             sockClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             try
@@ -393,7 +396,7 @@ namespace WirelessDoor_PC_master
                         post_flag = true;
                         //等待超时时间
                         int timeout = 0;
-                        //等待预约应答                  
+                        //等待预约应答
                         while (post_flag == true)
                         {
                             timeout++;
@@ -469,7 +472,7 @@ namespace WirelessDoor_PC_master
         /// <param name="e"></param>
         private void 查询预约记录ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ReservationForm reservationForm = new ReservationForm(personName);
+            ReservationForm reservationForm = new ReservationForm(userID, personName, sockClient);
             reservationForm.ShowDialog();
         }
 
@@ -524,7 +527,7 @@ namespace WirelessDoor_PC_master
         /// <param name="e"></param>
         private void 预约信息ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ReservationForm reservationForm = new ReservationForm(personName);
+            ReservationForm reservationForm = new ReservationForm(userID, personName, sockClient);
             reservationForm.ShowDialog();
         }
     }

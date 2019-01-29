@@ -17,11 +17,13 @@ namespace WirelessDoor_PC_master
 {
     public partial class LogForm : Form
     {
-        IPAddress[] HOST = Dns.GetHostAddresses("k806034232.6655.la");
-        private const int port = 8086;
+        //数据库信息
+        string host = "localhost";
+        //string host = "47.100.28.6";
         string database = "room";
-        String username = "root";
+        string username = "root";
         string passwd = "Dll960220";
+        //string passwd = "LL960220";
 
         public LogForm()
         {
@@ -42,7 +44,7 @@ namespace WirelessDoor_PC_master
             }
             else if (txBox_username.Text != "" && txBox_passwd.Text != "")
             {
-                MySqlConnection myconn = new MySqlConnection("Host =localhost"
+                MySqlConnection myconn = new MySqlConnection("Host =" + host
                                             + ";Database="+database
                                             +";Username="+username
                                             +";Password="+passwd + ";");
@@ -211,5 +213,6 @@ namespace WirelessDoor_PC_master
             this.DialogResult = DialogResult.Yes;
             this.Hide();
         }
+
     }
 }

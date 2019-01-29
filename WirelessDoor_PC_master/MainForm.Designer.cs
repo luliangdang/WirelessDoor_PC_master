@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.dgvRoom = new System.Windows.Forms.DataGridView();
             this.roomName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.roomState = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -262,10 +263,11 @@
             this.beginTimePicker.CustomFormat = "yyyy-MM-dd HH:mm";
             this.beginTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.beginTimePicker.Location = new System.Drawing.Point(14, 62);
+            this.beginTimePicker.MinDate = new System.DateTime(2019, 1, 29, 0, 0, 0, 0);
             this.beginTimePicker.Name = "beginTimePicker";
             this.beginTimePicker.Size = new System.Drawing.Size(154, 21);
             this.beginTimePicker.TabIndex = 3;
-            this.beginTimePicker.Value = new System.DateTime(2018, 12, 5, 3, 59, 35, 0);
+            this.beginTimePicker.Value = new System.DateTime(2019, 1, 29, 0, 0, 0, 0);
             this.beginTimePicker.MouseCaptureChanged += new System.EventHandler(this.beginTime_MouseCaptureChanged);
             // 
             // cbRoomName
@@ -309,6 +311,7 @@
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
