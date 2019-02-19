@@ -375,9 +375,9 @@ namespace WirelessDoor_PC_master
                         //MessageBox.Show(userID);
                         string userTel = textBox_reservTel.Text;
                         //MessageBox.Show(userTel);
-                        string beginTime = beginTimePicker.Value.ToString("yyyy-MM-dd HH:mm");
+                        string beginTime = beginTimePicker.Value.ToString("yyyyMMddHHmmss");
                         //MessageBox.Show(beginTime);
-                        string endTime = endTimePicker.Value.ToString("yyyy-MM-dd HH:mm");
+                        string endTime = endTimePicker.Value.ToString("yyyyMMddHHmmss");
                         //MessageBox.Show(endTime);
                         string reason = rTbox_reason.Text;
 

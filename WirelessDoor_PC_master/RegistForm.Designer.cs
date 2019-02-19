@@ -31,15 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RegistForm));
             this.panel1 = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.tbPhotoPath = new System.Windows.Forms.TextBox();
-            this.btCamera = new System.Windows.Forms.Button();
-            this.cbCamera = new System.Windows.Forms.ComboBox();
-            this.btShoot = new System.Windows.Forms.Button();
-            this.btGetPhoto = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.vspUserPhoto = new AForge.Controls.VideoSourcePlayer();
-            this.pbUserPhoto = new System.Windows.Forms.PictureBox();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
@@ -65,14 +56,23 @@
             this.tbPasswd = new System.Windows.Forms.TextBox();
             this.tbUserName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.tbPhotoPath = new System.Windows.Forms.TextBox();
+            this.btCamera = new System.Windows.Forms.Button();
+            this.cbCamera = new System.Windows.Forms.ComboBox();
+            this.btShoot = new System.Windows.Forms.Button();
+            this.btGetPhoto = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.vspUserPhoto = new AForge.Controls.VideoSourcePlayer();
+            this.pbUserPhoto = new System.Windows.Forms.PictureBox();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbUserPhoto)).BeginInit();
-            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -105,83 +105,6 @@
             this.splitContainer1.Size = new System.Drawing.Size(419, 346);
             this.splitContainer1.SplitterDistance = 274;
             this.splitContainer1.TabIndex = 0;
-            // 
-            // tbPhotoPath
-            // 
-            this.tbPhotoPath.Location = new System.Drawing.Point(22, 317);
-            this.tbPhotoPath.Name = "tbPhotoPath";
-            this.tbPhotoPath.Size = new System.Drawing.Size(100, 21);
-            this.tbPhotoPath.TabIndex = 7;
-            // 
-            // btCamera
-            // 
-            this.btCamera.Location = new System.Drawing.Point(31, 229);
-            this.btCamera.Name = "btCamera";
-            this.btCamera.Size = new System.Drawing.Size(75, 23);
-            this.btCamera.TabIndex = 6;
-            this.btCamera.Text = "打开摄像头";
-            this.btCamera.UseVisualStyleBackColor = true;
-            this.btCamera.Click += new System.EventHandler(this.btCamera_Click);
-            // 
-            // cbCamera
-            // 
-            this.cbCamera.FormattingEnabled = true;
-            this.cbCamera.Location = new System.Drawing.Point(11, 203);
-            this.cbCamera.Name = "cbCamera";
-            this.cbCamera.Size = new System.Drawing.Size(121, 20);
-            this.cbCamera.TabIndex = 5;
-            // 
-            // btShoot
-            // 
-            this.btShoot.Location = new System.Drawing.Point(31, 258);
-            this.btShoot.Name = "btShoot";
-            this.btShoot.Size = new System.Drawing.Size(75, 23);
-            this.btShoot.TabIndex = 4;
-            this.btShoot.Text = "拍照";
-            this.btShoot.UseVisualStyleBackColor = true;
-            this.btShoot.Click += new System.EventHandler(this.btShoot_Click);
-            // 
-            // btGetPhoto
-            // 
-            this.btGetPhoto.Location = new System.Drawing.Point(31, 287);
-            this.btGetPhoto.Name = "btGetPhoto";
-            this.btGetPhoto.Size = new System.Drawing.Size(75, 23);
-            this.btGetPhoto.TabIndex = 3;
-            this.btGetPhoto.Text = "添加照片";
-            this.btGetPhoto.UseVisualStyleBackColor = true;
-            this.btGetPhoto.Click += new System.EventHandler(this.btGetPhoto_Click);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.vspUserPhoto);
-            this.groupBox1.Controls.Add(this.pbUserPhoto);
-            this.groupBox1.Location = new System.Drawing.Point(5, 3);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(133, 193);
-            this.groupBox1.TabIndex = 2;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "照片";
-            // 
-            // vspUserPhoto
-            // 
-            this.vspUserPhoto.Location = new System.Drawing.Point(6, 22);
-            this.vspUserPhoto.Name = "vspUserPhoto";
-            this.vspUserPhoto.Size = new System.Drawing.Size(120, 160);
-            this.vspUserPhoto.TabIndex = 1;
-            this.vspUserPhoto.Text = "videoSourcePlayer1";
-            this.vspUserPhoto.VideoSource = null;
-            // 
-            // pbUserPhoto
-            // 
-            this.pbUserPhoto.Location = new System.Drawing.Point(6, 21);
-            this.pbUserPhoto.Name = "pbUserPhoto";
-            this.pbUserPhoto.Size = new System.Drawing.Size(120, 160);
-            this.pbUserPhoto.TabIndex = 0;
-            this.pbUserPhoto.TabStop = false;
-            // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.FileName = "openFileDialog1";
             // 
             // groupBox2
             // 
@@ -341,6 +264,7 @@
             this.btRegist.TabIndex = 37;
             this.btRegist.Text = "注册";
             this.btRegist.UseVisualStyleBackColor = true;
+            this.btRegist.Click += new System.EventHandler(this.btRegist_Click);
             // 
             // dtBirthday
             // 
@@ -425,6 +349,83 @@
             this.label1.TabIndex = 27;
             this.label1.Text = "姓名：";
             // 
+            // tbPhotoPath
+            // 
+            this.tbPhotoPath.Location = new System.Drawing.Point(22, 317);
+            this.tbPhotoPath.Name = "tbPhotoPath";
+            this.tbPhotoPath.Size = new System.Drawing.Size(100, 21);
+            this.tbPhotoPath.TabIndex = 7;
+            // 
+            // btCamera
+            // 
+            this.btCamera.Location = new System.Drawing.Point(31, 229);
+            this.btCamera.Name = "btCamera";
+            this.btCamera.Size = new System.Drawing.Size(75, 23);
+            this.btCamera.TabIndex = 6;
+            this.btCamera.Text = "打开摄像头";
+            this.btCamera.UseVisualStyleBackColor = true;
+            this.btCamera.Click += new System.EventHandler(this.btCamera_Click);
+            // 
+            // cbCamera
+            // 
+            this.cbCamera.FormattingEnabled = true;
+            this.cbCamera.Location = new System.Drawing.Point(11, 203);
+            this.cbCamera.Name = "cbCamera";
+            this.cbCamera.Size = new System.Drawing.Size(121, 20);
+            this.cbCamera.TabIndex = 5;
+            // 
+            // btShoot
+            // 
+            this.btShoot.Location = new System.Drawing.Point(31, 258);
+            this.btShoot.Name = "btShoot";
+            this.btShoot.Size = new System.Drawing.Size(75, 23);
+            this.btShoot.TabIndex = 4;
+            this.btShoot.Text = "拍照";
+            this.btShoot.UseVisualStyleBackColor = true;
+            this.btShoot.Click += new System.EventHandler(this.btShoot_Click);
+            // 
+            // btGetPhoto
+            // 
+            this.btGetPhoto.Location = new System.Drawing.Point(31, 287);
+            this.btGetPhoto.Name = "btGetPhoto";
+            this.btGetPhoto.Size = new System.Drawing.Size(75, 23);
+            this.btGetPhoto.TabIndex = 3;
+            this.btGetPhoto.Text = "添加照片";
+            this.btGetPhoto.UseVisualStyleBackColor = true;
+            this.btGetPhoto.Click += new System.EventHandler(this.btGetPhoto_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.vspUserPhoto);
+            this.groupBox1.Controls.Add(this.pbUserPhoto);
+            this.groupBox1.Location = new System.Drawing.Point(5, 3);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(133, 193);
+            this.groupBox1.TabIndex = 2;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "照片";
+            // 
+            // vspUserPhoto
+            // 
+            this.vspUserPhoto.Location = new System.Drawing.Point(6, 22);
+            this.vspUserPhoto.Name = "vspUserPhoto";
+            this.vspUserPhoto.Size = new System.Drawing.Size(120, 160);
+            this.vspUserPhoto.TabIndex = 1;
+            this.vspUserPhoto.Text = "videoSourcePlayer1";
+            this.vspUserPhoto.VideoSource = null;
+            // 
+            // pbUserPhoto
+            // 
+            this.pbUserPhoto.Location = new System.Drawing.Point(6, 21);
+            this.pbUserPhoto.Name = "pbUserPhoto";
+            this.pbUserPhoto.Size = new System.Drawing.Size(120, 160);
+            this.pbUserPhoto.TabIndex = 0;
+            this.pbUserPhoto.TabStop = false;
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
             // RegistForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -445,10 +446,10 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbUserPhoto)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbUserPhoto)).EndInit();
             this.ResumeLayout(false);
 
         }
