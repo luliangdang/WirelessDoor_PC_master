@@ -18,12 +18,12 @@ namespace WirelessDoor_PC_master
     public partial class LogForm : Form
     {
         //数据库信息
-        string host = "localhost";
-        //string host = "47.100.28.6";
+        //string host = "localhost";
+        string host = "47.100.28.6";
         string database = "room";
         string username = "root";
-        string passwd = "Dll960220";
-        //string passwd = "LL960220";
+        //string passwd = "Dll960220";
+        string passwd = "LL960220";
 
         public LogForm()
         {
@@ -55,15 +55,15 @@ namespace WirelessDoor_PC_master
                     //新建SQL指令
                     MySqlCommand mycom = myconn.CreateCommand();
                     //构造SQL指令
-                    string sql = string.Format("SELECT * FROM userInfo WHERE authority=\"" + txBox_username.Text +"\";");
+                    string sql = string.Format("SELECT * FROM userinfo WHERE authority=" + txBox_username.Text +";");
 
                     //MessageBox.Show(sql);
                     mycom.CommandText = sql;
 
                     mycom.CommandType = CommandType.Text;
-
+                    //执行查询指令
                     MySqlDataReader reader = mycom.ExecuteReader();
-
+                    
                     if (reader.Read())
                     {
                         //MessageBox.Show(reader[0].ToString());
@@ -82,8 +82,11 @@ namespace WirelessDoor_PC_master
                     }
                     else
                     {
-                        MessageBox.Show("用户名或密码错误！");
+                        MessageBox.Show("用户名不存在！");
                     }
+                    //释放reader的资源
+                    reader.Dispose();
+                    reader.Close();
                 }
                 catch (Exception ex)
                 {
@@ -213,6 +216,5 @@ namespace WirelessDoor_PC_master
             this.DialogResult = DialogResult.Yes;
             this.Hide();
         }
-
     }
 }

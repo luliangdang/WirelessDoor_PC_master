@@ -39,6 +39,8 @@
             this.endTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.reason = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.dtEndTime = new System.Windows.Forms.DateTimePicker();
+            this.dtBeginTime = new System.Windows.Forms.DateTimePicker();
             this.btSet = new System.Windows.Forms.Button();
             this.rtReason = new System.Windows.Forms.RichTextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -48,8 +50,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.rtLogo = new System.Windows.Forms.RichTextBox();
-            this.dtBeginTime = new System.Windows.Forms.DateTimePicker();
-            this.dtEndTime = new System.Windows.Forms.DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -107,6 +107,7 @@
             this.dgvReservation.Name = "dgvReservation";
             this.dgvReservation.ReadOnly = true;
             this.dgvReservation.RowTemplate.Height = 23;
+            this.dgvReservation.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvReservation.Size = new System.Drawing.Size(575, 116);
             this.dgvReservation.TabIndex = 0;
             this.dgvReservation.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvReservation_CellDoubleClick);
@@ -164,6 +165,28 @@
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "修改信息";
+            // 
+            // dtEndTime
+            // 
+            this.dtEndTime.CustomFormat = "yyyy-MM-dd HH:mm";
+            this.dtEndTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtEndTime.Location = new System.Drawing.Point(78, 96);
+            this.dtEndTime.MinDate = new System.DateTime(2019, 1, 29, 0, 0, 0, 0);
+            this.dtEndTime.Name = "dtEndTime";
+            this.dtEndTime.Size = new System.Drawing.Size(154, 21);
+            this.dtEndTime.TabIndex = 11;
+            this.dtEndTime.Value = new System.DateTime(2019, 1, 29, 0, 0, 0, 0);
+            // 
+            // dtBeginTime
+            // 
+            this.dtBeginTime.CustomFormat = "yyyy-MM-dd HH:mm";
+            this.dtBeginTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtBeginTime.Location = new System.Drawing.Point(78, 63);
+            this.dtBeginTime.MinDate = new System.DateTime(2019, 1, 29, 0, 0, 0, 0);
+            this.dtBeginTime.Name = "dtBeginTime";
+            this.dtBeginTime.Size = new System.Drawing.Size(154, 21);
+            this.dtBeginTime.TabIndex = 10;
+            this.dtBeginTime.Value = new System.DateTime(2019, 1, 29, 0, 0, 0, 0);
             // 
             // btSet
             // 
@@ -246,28 +269,6 @@
             this.rtLogo.Size = new System.Drawing.Size(194, 199);
             this.rtLogo.TabIndex = 0;
             this.rtLogo.Text = "";
-            // 
-            // dtBeginTime
-            // 
-            this.dtBeginTime.CustomFormat = "yyyy-MM-dd HH:mm";
-            this.dtBeginTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtBeginTime.Location = new System.Drawing.Point(78, 63);
-            this.dtBeginTime.MinDate = new System.DateTime(2019, 1, 29, 0, 0, 0, 0);
-            this.dtBeginTime.Name = "dtBeginTime";
-            this.dtBeginTime.Size = new System.Drawing.Size(154, 21);
-            this.dtBeginTime.TabIndex = 10;
-            this.dtBeginTime.Value = new System.DateTime(2019, 1, 29, 0, 0, 0, 0);
-            // 
-            // dtEndTime
-            // 
-            this.dtEndTime.CustomFormat = "yyyy-MM-dd HH:mm";
-            this.dtEndTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtEndTime.Location = new System.Drawing.Point(78, 96);
-            this.dtEndTime.MinDate = new System.DateTime(2019, 1, 29, 0, 0, 0, 0);
-            this.dtEndTime.Name = "dtEndTime";
-            this.dtEndTime.Size = new System.Drawing.Size(154, 21);
-            this.dtEndTime.TabIndex = 11;
-            this.dtEndTime.Value = new System.DateTime(2019, 1, 29, 0, 0, 0, 0);
             // 
             // ReservationForm
             // 

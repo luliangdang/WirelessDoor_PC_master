@@ -96,6 +96,7 @@
             // 
             // LogForm
             // 
+            this.AcceptButton = this.bt_login;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;

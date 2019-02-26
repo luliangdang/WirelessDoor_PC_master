@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.dgvRoom = new System.Windows.Forms.DataGridView();
             this.roomName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -54,7 +53,6 @@
             this.cbRoomName = new System.Windows.Forms.ComboBox();
             this.lbbeginTime = new System.Windows.Forms.Label();
             this.lbRoomName = new System.Windows.Forms.Label();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dgvRoom)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -79,6 +77,7 @@
             this.dgvRoom.Name = "dgvRoom";
             this.dgvRoom.ReadOnly = true;
             this.dgvRoom.RowTemplate.Height = 23;
+            this.dgvRoom.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvRoom.Size = new System.Drawing.Size(493, 202);
             this.dgvRoom.TabIndex = 0;
             // 
@@ -274,11 +273,6 @@
             // 
             this.cbRoomName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbRoomName.FormattingEnabled = true;
-            this.cbRoomName.Items.AddRange(new object[] {
-            "1教101",
-            "1教201",
-            "2教405",
-            "3教204"});
             this.cbRoomName.Location = new System.Drawing.Point(59, 16);
             this.cbRoomName.Name = "cbRoomName";
             this.cbRoomName.Size = new System.Drawing.Size(121, 20);
@@ -351,12 +345,10 @@
         private System.Windows.Forms.Button bt_reserv;
         private System.Windows.Forms.TextBox textBox_reservTel;
         private System.Windows.Forms.Label lbreseverTel;
-        private System.Windows.Forms.Timer update_timer;
         private System.Windows.Forms.RichTextBox rTbox_reason;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox_reservname;
         private System.Windows.Forms.Label lbResever;
-        private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.DataGridViewTextBoxColumn roomName;
         private System.Windows.Forms.DataGridViewTextBoxColumn roomState;
         private System.Windows.Forms.DataGridViewTextBoxColumn netState;

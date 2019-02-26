@@ -104,7 +104,7 @@ namespace WirelessDoor_PC_master
                 //MessageBox.Show("服务器连接成功！！");
                 client_flag = true;
             }
-            catch (SocketException se)
+            catch (SocketException)
             {
                 sockClient.Close();
                 client_flag = false;
@@ -136,6 +136,7 @@ namespace WirelessDoor_PC_master
                                                          ";Username=" + username +
                                                          ";Password=" + passwd + ";");
             dgvRoom.Rows.Clear();
+            cbRoomName.Items.Clear();
             try
             {
                 //连接数据库
@@ -154,6 +155,7 @@ namespace WirelessDoor_PC_master
                     dgvRoom.Rows[index].Cells[0].Value = reader.GetString(1);
                     dgvRoom.Rows[index].Cells[1].Value = reader.GetString(2);
                     dgvRoom.Rows[index].Cells[2].Value = reader.GetString(3);
+                    cbRoomName.Items.Add(reader.GetString(1));
                 }
 
                 //释放reader的资源
@@ -332,10 +334,10 @@ namespace WirelessDoor_PC_master
                 return res;
             }
             */
-            if (endTimePicker.Value.Subtract(beginTimePicker.Value) < System.TimeSpan.FromMinutes(30))
+            if (endTimePicker.Value.Subtract(beginTimePicker.Value) < System.TimeSpan.FromMinutes(5))
             {
                 res = false;
-                MessageBox.Show("预约时间小于30分钟！");
+                MessageBox.Show("预约时间小于5分钟！");
                 return res;
             }
             return res;
@@ -505,6 +507,9 @@ namespace WirelessDoor_PC_master
                     personName = reader.GetString(0);
                 }
 
+                //释放reader的资源
+                reader.Dispose();
+                reader.Close();
                 //关闭数据库，防止数据库被锁定
                 myconn.Dispose();
                 myconn.Close();

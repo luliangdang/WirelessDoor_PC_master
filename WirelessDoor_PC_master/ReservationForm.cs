@@ -32,14 +32,16 @@ namespace WirelessDoor_PC_master
         string getBeginTime = null;
         string getEndTime = null;
 
-        //发送请求标志
-        bool post_flag = false;
-
         public ReservationForm()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// 界面初始化
+        /// </summary>
+        /// <param name="str1">用户名</param>
+        /// <param name="socketClient">socket连接对象</param>
         public ReservationForm(string str1, Socket socketClient)
         {
             InitializeComponent();
@@ -51,6 +53,12 @@ namespace WirelessDoor_PC_master
             dtEndTime.Value = DateTime.Now;
         }
 
+        /// <summary>
+        /// 界面初始化
+        /// </summary>
+        /// <param name="userid">用户号</param>
+        /// <param name="UserName">用户名</param>
+        /// <param name="socketClient">socket连接对象</param>
         public ReservationForm(string userid, string UserName, Socket socketClient)
         {
             InitializeComponent();
@@ -66,7 +74,7 @@ namespace WirelessDoor_PC_master
         /// <summary>
         /// 显示日志
         /// </summary>
-        /// <param name="str"></param>
+        /// <param name="str">待显示数据</param>
         void ShowMsg(string str)
         {
             if (rtLogo.Text != "") { rtLogo.Text += "\r\n"; }
@@ -75,6 +83,11 @@ namespace WirelessDoor_PC_master
             rtLogo.ScrollToCaret();  //将滚动条设置到光标处
         }
 
+        /// <summary>
+        /// 界面加载
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ReservationForm_Load(object sender, EventArgs e)
         {
             System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
@@ -106,6 +119,8 @@ namespace WirelessDoor_PC_master
 
                 while (reader.Read())
                 {
+                    string time1 = reader.GetString(7).Substring(0, 4) + '-' + reader.GetString(7).Substring(4, 2) + '-' + reader.GetString(7).Substring(6, 2) + ' ' + reader.GetString(7).Substring(8, 2) + ':' + reader.GetString(7).Substring(10, 2);
+                    string time2 = reader.GetString(7).Substring(0, 4) + '-' + reader.GetString(7).Substring(4, 2) + '-' + reader.GetString(7).Substring(6, 2) + ' ' + reader.GetString(7).Substring(8, 2) + ':' + reader.GetString(7).Substring(10, 2);
                     int index = dgvReservation.Rows.Add();
                     dgvReservation.Rows[index].Cells[0].Value = reader.GetString(1);        //会议室名称
                     dgvReservation.Rows[index].Cells[1].Value = reader.GetString(3);        //处理状况
@@ -114,8 +129,8 @@ namespace WirelessDoor_PC_master
                         dgvReservation.Rows[index].Cells[2].Value = "无";                   //申请结果
                     }
                     else dgvReservation.Rows[index].Cells[2].Value = reader.GetString(2);
-                    dgvReservation.Rows[index].Cells[3].Value = reader.GetString(7);        //开始时间
-                    dgvReservation.Rows[index].Cells[4].Value = reader.GetString(8);        //结束时间
+                    dgvReservation.Rows[index].Cells[3].Value = time1;        //开始时间
+                    dgvReservation.Rows[index].Cells[4].Value = time2;        //结束时间
                     dgvReservation.Rows[index].Cells[5].Value = reader.GetString(9);        //申请理由
                 }
 
@@ -195,9 +210,9 @@ namespace WirelessDoor_PC_master
                     {
                         string roomID = reader.GetUInt16(0).ToString().PadLeft(4, '0');
                         //MessageBox.Show(roomID);
-                        string beginTime = dtBeginTime.Value.ToString("yyyy-MM-dd HH:mm");
+                        string beginTime = dtBeginTime.Value.ToString("yyyyMMddHHmmss");
                         //MessageBox.Show(beginTime);
-                        string endTime = dtEndTime.Value.ToString("yyyy-MM-dd HH:mm");
+                        string endTime = dtEndTime.Value.ToString("yyyyMMddHHmmss");
                         //MessageBox.Show(endTime);
                         string reason = rtReason.Text;
 

@@ -70,7 +70,7 @@ namespace WirelessDoor_PC_master
                     btShoot.Enabled = false;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 cbCamera.Items.Add("No local capture devices");
                 videoDevices = null;
@@ -564,7 +564,7 @@ namespace WirelessDoor_PC_master
                 }
             }
             //报错处理
-            catch (Exception ex)
+            catch (Exception)
             {
                 vspUserPhoto.SignalToStop();
                 vspUserPhoto.WaitForStop();
