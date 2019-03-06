@@ -14,11 +14,10 @@ namespace WirelessDoor_PC_master
     public partial class PersonForm : Form
     {
         //数据库信息
-        string host = "47.100.28.6";
+        string host = "***.**.**.*";
         string database = "room";
         string username = "root";
-        //string passwd = "Dll960220";
-        string passwd = "LL960220";
+        string passwd = "********";
 
         string Passwd = null;
         string QQ = null;
