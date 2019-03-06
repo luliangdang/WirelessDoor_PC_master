@@ -27,14 +27,13 @@ namespace WirelessDoor_PC_master
         //视频数据流
         private VideoCaptureDevice videoSource;
 
-        IPAddress[] HOST = Dns.GetHostAddresses("k806034232.6655.la");
+        IPAddress[] HOST = Dns.GetHostAddresses("************");
         private const int port = 8086;
         //数据库信息
         string host = "47.100.28.6";
         string database = "room";
         string username = "root";
-        //string passwd = "Dll960220";
-        string passwd = "LL960220";
+        string passwd = "********";
 
 
         public RegistForm()
