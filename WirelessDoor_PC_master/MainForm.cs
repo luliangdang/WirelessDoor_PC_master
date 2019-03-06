@@ -25,7 +25,6 @@ namespace WirelessDoor_PC_master
         ***********************/
         //服务器地址
         IPAddress[] HOST = Dns.GetHostAddresses("k806034232.6655.la");
-        //IPAddress HOST = IPAddress.Parse("172.20.10.3");
         //服务器端口号
         private const int port = 8086;
 
@@ -34,18 +33,16 @@ namespace WirelessDoor_PC_master
         string personName = null;
 
         //数据库信息
-        //string host = "localhost";
-        string host = "47.100.28.6";
+        string host = "***.***.**.*";
         string database = "room";
         string username = "root";
-        //string passwd = "Dll960220";
-        string passwd = "LL960220";
+        string passwd = "*******";
 
         //短信发送appid
-        int appid = 1400178112;
-        string appkey = "6402f72c5c2d15fac7f124d78d6f4759";
+        int appid = **********;
+        string appkey = "********************************";
         int[] templateId = { 265637, 270334, 265636, 266224 };
-        string smsSign = "会易云";
+        string smsSign = "***";
 
         // 创建用于接收服务端消息的 线程；
         Thread threadClient = null;
