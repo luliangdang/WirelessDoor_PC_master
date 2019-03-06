@@ -18,12 +18,10 @@ namespace WirelessDoor_PC_master
     public partial class ReservationForm : Form
     {
         //数据库信息
-        //string host = "localhost";
-        string host = "47.100.28.6";
+        string host = "**.**.**.*";
         string database = "room";
         string username = "root";
-        //string passwd = "Dll960220";
-        string passwd = "LL960220";
+        string passwd = "********";
 
         string userID = null;
         string userName = null;
